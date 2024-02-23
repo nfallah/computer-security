@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class ColumnEncrypt {
+public class ColumnDecrypt {
     private static final int BLOCK_SIZE_DEFAULT = 16; // Measured in bytes
     public static void main(String[] args)
     {
@@ -78,27 +78,27 @@ public class ColumnEncrypt {
                 int bytes_read;
                 while ((bytes_read = System.in.read(stream_buffer)) != -1)
                 {
+                    // Put into table top to bottom, left to right
                     Byte[][] table = new Byte[x][y];
                     int tmp = bytes_read;
-                    // Put into table left to right, top to bottom
-                    for (int _y = 0; _y < y && tmp > 0; _y++)
-                    {
-                        for (int _x = 0; _x < x && tmp > 0; _x++)
-                        {
-                            table[_x][_y] = stream_buffer[bytes_read - tmp--];
-                        }
-                    }
-                    // Now extract from top to bottom in order of keys
-                    byte[] output_buffer = new byte[bytes_read];
-                    tmp = 0;
-                    for (int _x = 0; _x < x; _x++)
+                    for (int _x = 0; _x < x && tmp > 0; _x++)
                     {
                         int _x_actual = order[_x];
-                        for (int _y = 0; _y < y; _y++)
+                        for (int _y = 0; _y < y && tmp > 0; _y++)
                         {
-                            if (table[_x_actual][_y] != null)
+                            table[_x_actual][_y] = stream_buffer[bytes_read - tmp--];
+                        }
+                    }
+                    byte[] output_buffer = new byte[bytes_read];
+                    tmp = 0;
+                    // Put into table left to right, top to bottom
+                    for (int _y = 0; _y < y; _y++)
+                    {
+                        for (int _x = 0; _x < x; _x++)
+                        {
+                            if (table[_x][_y] != null)
                             {
-                                output_buffer[tmp++] = table[_x_actual][_y];
+                                output_buffer[tmp++] = table[_x][_y];
                             }
                         }
                     }
@@ -118,29 +118,30 @@ public class ColumnEncrypt {
                 int bytes_read;
                 while ((bytes_read = file_stream.read(stream_buffer)) != -1)
                 {
+                    // Put into table top to bottom, left to right
                     Byte[][] table = new Byte[x][y];
                     System.out.println(x);
                     System.out.println(y);
                     int tmp = bytes_read;
-                    // Put into table left to right, top to bottom
-                    for (int _y = 0; _y < y && tmp > 0; _y++)
-                    {
-                        for (int _x = 0; _x < x && tmp > 0; _x++)
-                        {
-                            table[_x][_y] = stream_buffer[bytes_read - tmp--];
-                        }
-                    }
-                    // Now extract from top to bottom in order of keys
-                    byte[] output_buffer = new byte[bytes_read];
-                    tmp = 0;
-                    for (int _x = 0; _x < x; _x++)
+                    for (int _x = 0; _x < x && tmp > 0; _x++)
                     {
                         int _x_actual = order[_x];
-                        for (int _y = 0; _y < y; _y++)
+                        for (int _y = 0; _y < y && tmp > 0; _y++)
                         {
-                            if (table[_x_actual][_y] != null)
+                            table[_x_actual][_y] = stream_buffer[bytes_read - tmp--];
+                        }
+                    }
+                    printTable(table);
+                    byte[] output_buffer = new byte[bytes_read];
+                    tmp = 0;
+                    // Put into table left to right, top to bottom
+                    for (int _y = 0; _y < y; _y++)
+                    {
+                        for (int _x = 0; _x < x; _x++)
+                        {
+                            if (table[_x][_y] != null)
                             {
-                                output_buffer[tmp++] = table[_x_actual][_y];
+                                output_buffer[tmp++] = table[_x][_y];
                             }
                         }
                     }
@@ -151,6 +152,19 @@ public class ColumnEncrypt {
             {
                 return;
             } 
+        }
+    }
+
+    public static void printTable(Byte[][] table) {
+        for (int i = 0; i < table.length; i++) {
+            for (int j = 0; j < table[i].length; j++) {
+                if (table[i][j] != null) {
+                    System.out.print((char) (byte) table[i][j] + ",");
+                } else {
+                    System.out.print("-,"); // Print a space for null values for clarity
+                }
+            }
+            System.out.println();
         }
     }
 }
