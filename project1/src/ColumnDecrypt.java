@@ -120,8 +120,6 @@ public class ColumnDecrypt {
                 {
                     // Put into table top to bottom, left to right
                     Byte[][] table = new Byte[x][y];
-                    System.out.println(x);
-                    System.out.println(y);
                     int tmp = bytes_read;
                     for (int _x = 0; _x < x && tmp > 0; _x++)
                     {
@@ -131,7 +129,6 @@ public class ColumnDecrypt {
                             table[_x_actual][_y] = stream_buffer[bytes_read - tmp--];
                         }
                     }
-                    printTable(table);
                     byte[] output_buffer = new byte[bytes_read];
                     tmp = 0;
                     // Put into table left to right, top to bottom
@@ -152,19 +149,6 @@ public class ColumnDecrypt {
             {
                 return;
             } 
-        }
-    }
-
-    public static void printTable(Byte[][] table) {
-        for (int i = 0; i < table.length; i++) {
-            for (int j = 0; j < table[i].length; j++) {
-                if (table[i][j] != null) {
-                    System.out.print((char) (byte) table[i][j] + ",");
-                } else {
-                    System.out.print("-,"); // Print a space for null values for clarity
-                }
-            }
-            System.out.println();
         }
     }
 }
