@@ -78,14 +78,28 @@ public class ColumnDecrypt {
                 int bytes_read;
                 while ((bytes_read = System.in.read(stream_buffer)) != -1)
                 {
+                    boolean[][] should_read = new boolean[x][y];
+                    int tmp = bytes_read;
+                    for (int _y = 0; _y < y && tmp > 0; _y++)
+                    {
+                        for (int _x = 0; _x < x && tmp > 0; _x++)
+                        {
+                            should_read[_x][_y] = true;
+                            tmp--;
+                        }
+                    }
                     // Put into table top to bottom, left to right
                     Byte[][] table = new Byte[x][y];
-                    int tmp = bytes_read;
+                    tmp = bytes_read;
                     for (int _x = 0; _x < x && tmp > 0; _x++)
                     {
                         int _x_actual = order[_x];
                         for (int _y = 0; _y < y && tmp > 0; _y++)
                         {
+                            if (should_read[_x_actual][_y] == false)
+                            {
+                                continue;
+                            }
                             table[_x_actual][_y] = stream_buffer[bytes_read - tmp--];
                         }
                     }
@@ -107,7 +121,8 @@ public class ColumnDecrypt {
             }
             catch (Exception e)
             {
-                return;
+                e.printStackTrace();
+                System.err.println(e);
             }
         }
         else
@@ -118,14 +133,28 @@ public class ColumnDecrypt {
                 int bytes_read;
                 while ((bytes_read = file_stream.read(stream_buffer)) != -1)
                 {
+                    boolean[][] should_read = new boolean[x][y];
+                    int tmp = bytes_read;
+                    for (int _y = 0; _y < y && tmp > 0; _y++)
+                    {
+                        for (int _x = 0; _x < x && tmp > 0; _x++)
+                        {
+                            should_read[_x][_y] = true;
+                            tmp--;
+                        }
+                    }
                     // Put into table top to bottom, left to right
                     Byte[][] table = new Byte[x][y];
-                    int tmp = bytes_read;
+                    tmp = bytes_read;
                     for (int _x = 0; _x < x && tmp > 0; _x++)
                     {
                         int _x_actual = order[_x];
                         for (int _y = 0; _y < y && tmp > 0; _y++)
                         {
+                            if (should_read[_x_actual][_y] == false)
+                            {
+                                continue;
+                            }
                             table[_x_actual][_y] = stream_buffer[bytes_read - tmp--];
                         }
                     }
@@ -147,8 +176,47 @@ public class ColumnDecrypt {
             }
             catch(Exception e)
             {
-                return;
+                e.printStackTrace();
+                System.err.println(e);
             } 
+        }
+    }
+
+    public static void printTable(Byte[][] table)
+    {
+        for (int y = 0; y < table[0].length; y++)
+        {
+            for (int x = 0; x < table.length; x++)
+            {
+                if (table[x][y] == null)
+                {
+                    System.out.print("- ");
+                }
+                else
+                {
+                    System.out.print((char)(byte)table[x][y] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public static void printTable(boolean[][] table)
+    {
+        for (int y = 0; y < table[0].length; y++)
+        {
+            for (int x = 0; x < table.length; x++)
+            {
+                if (table[x][y] == true)
+                {
+                    System.out.print("T ");
+                }
+                else
+                {
+                    System.out.print("F ");
+                }
+            }
+            System.out.println();
         }
     }
 }

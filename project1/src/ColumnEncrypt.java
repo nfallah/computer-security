@@ -119,8 +119,6 @@ public class ColumnEncrypt {
                 while ((bytes_read = file_stream.read(stream_buffer)) != -1)
                 {
                     Byte[][] table = new Byte[x][y];
-                    System.out.println(x);
-                    System.out.println(y);
                     int tmp = bytes_read;
                     // Put into table left to right, top to bottom
                     for (int _y = 0; _y < y && tmp > 0; _y++)
