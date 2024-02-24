@@ -1,7 +1,8 @@
 import java.io.*;
 import java.util.*;
 
-public class ColumnEncrypt {
+public class ColumnEncrypt
+{
     private static final int BLOCK_SIZE_DEFAULT = 16; // Measured in bytes
     public static void main(String[] args)
     {
@@ -102,8 +103,9 @@ public class ColumnEncrypt {
                             }
                         }
                     }
-                    System.out.write(output_buffer, 0, tmp);
-                    System.out.flush();
+                    OutputStream stream = System.out;
+                    stream.write(output_buffer, 0, tmp);
+                    stream.flush();
                     stream_buffer = new byte[block_size];
                 }
             }
@@ -147,8 +149,9 @@ public class ColumnEncrypt {
                             }
                         }
                     }
-                    System.out.write(output_buffer, 0, tmp);
-                    System.out.flush();
+                    OutputStream stream = System.out;
+                    stream.write(output_buffer, 0, tmp);
+                    stream.flush();
                     stream_buffer = new byte[block_size];
                 }
                 file_stream.close();
