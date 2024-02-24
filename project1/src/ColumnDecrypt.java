@@ -116,19 +116,23 @@ public class ColumnDecrypt {
                             }
                         }
                     }
-                    System.out.write(output_buffer);
+                    System.out.write(output_buffer, 0, tmp);
+                    System.out.flush();
+                    stream_buffer = new byte[block_size];
                 }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
                 System.err.println(e);
+                return;
             }
         }
         else
         {
-            try (FileInputStream file_stream = new FileInputStream(path))
+            try
             {
+                FileInputStream file_stream = new FileInputStream(path);
                 byte[] stream_buffer = new byte[block_size];
                 int bytes_read;
                 while ((bytes_read = file_stream.read(stream_buffer)) != -1)
@@ -171,52 +175,18 @@ public class ColumnDecrypt {
                             }
                         }
                     }
-                    System.out.write(output_buffer);
+                    System.out.write(output_buffer, 0, tmp);
+                    System.out.flush();
+                    stream_buffer = new byte[block_size];
                 }
+                file_stream.close();
             }
             catch(Exception e)
             {
                 e.printStackTrace();
                 System.err.println(e);
+                return;
             } 
-        }
-    }
-
-    public static void printTable(Byte[][] table)
-    {
-        for (int y = 0; y < table[0].length; y++)
-        {
-            for (int x = 0; x < table.length; x++)
-            {
-                if (table[x][y] == null)
-                {
-                    System.out.print("- ");
-                }
-                else
-                {
-                    System.out.print((char)(byte)table[x][y] + " ");
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    public static void printTable(boolean[][] table)
-    {
-        for (int y = 0; y < table[0].length; y++)
-        {
-            for (int x = 0; x < table.length; x++)
-            {
-                if (table[x][y] == true)
-                {
-                    System.out.print("T ");
-                }
-                else
-                {
-                    System.out.print("F ");
-                }
-            }
-            System.out.println();
         }
     }
 }
