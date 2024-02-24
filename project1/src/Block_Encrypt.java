@@ -28,6 +28,7 @@ public class Block_Encrypt
             return;
         }
         String password = args[0];
+        if (password.length() == 0) return;
         String start_path = args[1];
         String end_path = args[2];
         long seed = sdbm(password);
@@ -55,6 +56,7 @@ public class Block_Encrypt
                 }
                 else if (bytes_read == -1)
                 {
+                    //System.err.println("PADDING*: 0");
                     for (int i = 0; i < 16; i++)
                     {
                         data[i] = ((Integer)16).byteValue();
@@ -62,13 +64,14 @@ public class Block_Encrypt
                     done = true;
                 }
                 // Step 1 (add padding)
-                if (bytes_read < 16)
+                if (bytes_read < 16 && bytes_read != -1)
                 {
                     final_pad = false;
                     for (int i = bytes_read; i < 16; i++)
                     {
                         data[i] = ((Integer)(16 - bytes_read)).byteValue();
                     }
+                    //System.err.println("PADDING-: " + (16-bytes_read));
                 }
                 byte[] tmp = new byte[16];
                 // Step 2 (temp block)
