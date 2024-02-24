@@ -81,8 +81,9 @@ public class Block_Decrypt
                 // Step 6: deal with padding
                 if (end_stream.available() == 0)
                 {
+                    //System.err.println("PADDING: " + plaintext_block[15]);
                     int padding = (int)plaintext_block[15];
-                    //System.err.println("PADDING: " + padding);
+                    //System.err.println("PADDING: " + (int)padding);
                     if (padding == 16) {
                         start_stream.close();
                         end_stream.close();

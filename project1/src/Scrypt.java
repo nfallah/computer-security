@@ -29,6 +29,9 @@ public class Scrypt
             return;
         }
         String password = args[0];
+        if (password.length() == 0) {
+            return;
+        }
         String start_path = args[1];
         String end_path = args[2];
         long seed = sdbm(password);
